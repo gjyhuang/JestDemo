@@ -1,38 +1,40 @@
 import React from 'react'
-import { add, subtract } from './calculations';
+import { add } from './calculations';
 
 const Calculator = () => {
-  const [num1, setNum1] = React.useState(0);
-  const [num2, setNum2] = React.useState(0);
+  const [numOne, setNumOne] = React.useState(0);
+  const [numTwo, setNumTwo] = React.useState(0);
   const [result, setResult] = React.useState(0);
 
-  const handleSubmit = (evt) => {
+  const handleSubmit = evt => {
     evt.preventDefault();
-    setResult(add(num1, num2));
+    setResult(add(numOne, numTwo));
   }
 
   return (
     <div id="calculator">
       <div className="header">Calculator</div>
       <div className="calculator-body">
-        <form onSubmit={(evt) => handleSubmit(evt)}>
-          <label>
-            Add:
-            <input
-              type="text"
-              id="num1"
-              defaultValue={num1}
-              onChange={e => setNum1(e.target.value)}
-            />
-            +
-            <input
-              type="text"
-              id="num2"
-              defaultValue={num2}
-              onChange={e => setNum2(e.target.value)}
-            />
-          </label>
-          <input type="Submit" value="=" readOnly={true} />
+        <form onSubmit={evt => handleSubmit(evt)}>
+          Add:
+          <input
+            type="number"
+            id="numOne"
+            defaultValue={numOne}
+            onChange={evt => setNumOne(evt.target.value)}
+          />
+          +
+          <input
+            type="number"
+            id="numTwo"
+            defaultValue={numTwo}
+            onChange={evt => setNumTwo(evt.target.value)}
+          />
+          <input
+            type="submit"
+            value="="
+            id="calcBtn"
+          />
         </form>
         <div className="result">{result}</div>
       </div>
