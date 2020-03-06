@@ -14,7 +14,7 @@ describe('The calculator component', () => {
   describe('Visual component', () => {
     it('renders', () => {
       const { container, debug } = render(<Calculator />);
-      // examples of viewable debug info:
+    // examples of viewable debug info:
       // console.log(debug());
       // console.log('firstchild', prettyDOM(container.firstChild))
       // console.log(container.parentElement)
@@ -26,15 +26,15 @@ describe('The calculator component', () => {
         return element.tagName.toLowerCase() === 'div' && content === 'Calculator';
       })).toBeTruthy();
     });
-    it('has two forms to input the numbers to be used in the calculator', () => {
+    it('has two input fields to input the numbers to be used in the calculator', () => {
       const { getAllByRole } = render(<Calculator />);
-      const forms = getAllByRole('textbox').filter(form => form.type === 'number');
-      expect(forms).toHaveLength(2);
+      const inputs = getAllByRole('textbox').filter(input => input.type === 'number');
+      expect(inputs).toHaveLength(2);
     });
-    it('which have the ids of "numOne" and "numTwo" and are set to 0 as default values', () => {
+    it('and those two input fields have the ids of "numOne" and "numTwo" and are set to 0 as default values', () => {
       const { getByDisplayValue } = render(<Calculator />);
       expect(getByDisplayValue((value, element) => {
-        // examples of viewable debug info:
+      // examples of viewable debug info:
         // console.log(element.id)
         // console.log(value, typeof value)
         return element.id === "numOne" && value === "0";
@@ -49,26 +49,31 @@ describe('The calculator component', () => {
         return element.id === 'calcBtn' && content === '=';
       })).toBeTruthy();
     });
-    it('can add two numbers together by filling in the number forms and hitting the calculate button', () => {
-      const { getByDisplayValue, getByText, getAllByRole, debug } = render(<Calculator />);
-      // using getAllByRole and looping through the forms:
+    it('can add two numbers together by filling in the number inputs and hitting the calculate button', () => {
+      const { getByText, getAllByRole, debug } = render(<Calculator />);
+      // using getAllByRole and looping through the inputs:
       const expectations = {
         numOne: 1,
         numTwo: 2,
       }
-      const forms = getAllByRole('textbox').filter(form => form.type === 'number');
-      forms.forEach((form) => {
-        fireEvent.change(form, {target: { value: expectations[form.id] }} )
+      const inputs = getAllByRole('textbox').filter(input => input.type === 'number');
+      inputs.forEach((input) => {
+        fireEvent.change(input, {target: { value: expectations[input.id] }} )
       })
 
-      // selecting each individual form:
-      // fireEvent.change(getByDisplayValue((value, element) => {
-      //   return element.id === "numOne";
-      // }), { target: { value: 1 }});
-      // fireEvent.change(getByDisplayValue((value, element) => {
-      //   return element.id === "numTwo";
-      // }), { target: { value: 2 }});
-      fireEvent.click(getByDisplayValue('='));
+      /* selecting each individual input:
+
+      fireEvent.change(getByDisplayValue((value, element) => {
+        return element.id === "numOne";
+      }), { target: { value: 1 }});
+      fireEvent.change(getByDisplayValue((value, element) => {
+        return element.id === "numTwo";
+      }), { target: { value: 2 }});
+
+      */
+
+      fireEvent.click(getByText('='));
+
       expect(getByText((content, element) => {
         return element.className === 'result' && content === "3";
       })).toBeTruthy();
